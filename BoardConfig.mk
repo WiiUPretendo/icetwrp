@@ -19,11 +19,6 @@ DEVICE_PATH := device/xiaomi/ice
 # Fix for compiler
 BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 
-# Fix for SELINUX policy violation / Device boots into TWRP but stays in xiaomi boot splash
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
-TW_INCLUDE_CRYPTO := false
-RECOVERY_EXTENSION_SERVICES += libresetprop
-
 # Architecture
 TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
@@ -78,9 +73,8 @@ BOARD_AVB_RECOVERY_ROLLBACK_INDEX_LOCATION := 1
 TARGET_BOOTLOADER_BOARD_NAME := ice
 TARGET_NO_BOOTLOADER := true
 
-# Kernel
-BOARD_KERNEL_CMDLINE := \
-	bootopt=64S3,32S1,32S1
+# Kernel Configuration & Boot Cmdline
+BOARD_KERNEL_CMDLINE := bootopt=64S3,32S1,32S1 androidboot.selinux=permissive
 
 BOARD_BOOTIMG_HEADER_VERSION := 2
 BOARD_KERNEL_BASE := 0x40000000
@@ -124,21 +118,23 @@ TARGET_BOARD_PLATFORM := mt6761
 # Treble
 TARGET_COPY_OUT_VENDOR := vendor
 
-# Recovery
+# Recovery Graphics Fixes
 TARGET_NO_RECOVERY := true
 BOARD_USES_RECOVERY_AS_BOOT := true
-TARGET_RECOVERY_PIXEL_FORMAT := BGRA_8888
+TARGET_RECOVERY_PIXEL_FORMAT := "BGRA_8888"
+RECOVERY_GRAPHICS_USE_GLES := true
+TW_TARGET_USES_QCOM_BSP := false
 
-# Encryption
+# Encryption & Security Patches
 PLATFORM_SECURITY_PATCH := 2127-12-31
 VENDOR_SECURITY_PATCH := $(PLATFORM_SECURITY_PATCH)
 PLATFORM_VERSION := 127
 PLATFORM_VERSION_LAST_STABLE := $(PLATFORM_VERSION)
 
-# Crypto
-TW_INCLUDE_CRYPTO := true
-TW_INCLUDE_CRYPTO_FBE := true
-TW_INCLUDE_FBE_METADATA_DECRYPT := true
+# Crypto (Disabled to avoid MediaTek Keymaster loop crashes)
+TW_INCLUDE_CRYPTO := false
+TW_INCLUDE_CRYPTO_FBE := false
+TW_INCLUDE_FBE_METADATA_DECRYPT := false
 
 # TWRP Configuration
 TW_THEME := portrait_hdpi
@@ -154,6 +150,9 @@ TW_EXCLUDE_TWRPAPP := true
 TW_BRIGHTNESS_PATH := "/sys/class/leds/lcd-backlight/brightness"
 TW_MAX_BRIGHTNESS := 2047
 TW_DEFAULT_BRIGHTNESS := 1200
+
+# Additional Libraries (Fix for libresetprop dependency crash)
+TW_RECOVERY_ADDITIONAL_LIBS += libresetprop
 
 # Debug
 TWRP_INCLUDE_LOGCAT := true
