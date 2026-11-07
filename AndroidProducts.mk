@@ -19,3 +19,6 @@ PRODUCT_MAKEFILES := \
 
 COMMON_LUNCH_CHOICES := \
     twrp_ice-eng
+
+PRODUCT_PACKAGES += \
+    libresetprop
