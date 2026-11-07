@@ -22,6 +22,7 @@ BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 # Fix for SELINUX policy violation / Device boots into TWRP but stays in xiaomi boot splash
 BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
 TW_INCLUDE_CRYPTO := false
+RECOVERY_EXTENSION_SERVICES += libresetprop
 
 # Architecture
 TARGET_ARCH := arm
