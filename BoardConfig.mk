@@ -15,6 +15,7 @@
 #
 
 DEVICE_PATH := device/xiaomi/ice
+BUILD_BROKEN_ELF_PREBUILT_PRODUCT_COPY_FILES := true
 
 # Architecture
 TARGET_ARCH := arm
